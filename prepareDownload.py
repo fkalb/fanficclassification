@@ -13,7 +13,6 @@ import requests
 #Folders#
 #########
 work_dir = os.getcwd()
-html_dir = os.path.join(work_dir, "html")
 id_dir = os.path.join(work_dir, "ID")
 
 ############
@@ -28,10 +27,6 @@ pages = 5       #   1 page = 20 results
 ###########
 #Functions#
 ###########
-
-def createFolder(folder):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
 
 def get_work_IDs(search_url, movie, result_pages):
     
@@ -61,10 +56,11 @@ def write_word_IDs(IDs, movie):
         IDs_str = "\n".join(IDs)
         outfile.write(IDs_str)
 
-def main(html_dir, id_dir, base_url, search_url, pages, movies):
-    createFolder(html_dir)
-    createFolder(id_dir)
-
+def main(id_dir, base_url, search_url, pages, movies):
+    
+    if not os.path.exists(id_dir):
+        os.makedirs(id_dir)
+    
     for movie in movies:
         IDs = get_work_IDs(search_url, movies[movie], pages)
         print(len(IDs), "IDs found for", movie)
@@ -75,4 +71,4 @@ def main(html_dir, id_dir, base_url, search_url, pages, movies):
         else:
             print("Not enough IDs gathered for ", movie, "... Please restart this script!")
     
-main(html_dir, id_dir, base_url, search_url, pages, movies)
+main(id_dir, base_url, search_url, pages, movies)
