@@ -72,7 +72,8 @@ def main(id_dir, search_url, search_parameter, novels, pages):
         while restart:
             """
             This while-loop was needed, because often less IDs than expected were found (especially with queries that returned a lot of results).
-            The loop will start over until the wanted amount of IDs has been collected
+            The loop will start over until the wanted amount of IDs has been collected.
+            Sometimes duplicates are collected, therefore a condition with "set" is needed
             """
             restart = False
 
@@ -80,7 +81,7 @@ def main(id_dir, search_url, search_parameter, novels, pages):
             print(len(IDs), "IDs found for", novel)
             #print(IDs)
 
-            if (len(IDs) == pages * 20):
+            if (len(set(IDs)) == pages * 20):
                 write_work_IDs(IDs, novel)
             else:
                 print("Something went wrong. Not enough IDs gathered for: ", novel, ". Loop restarting!")
