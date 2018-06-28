@@ -19,7 +19,7 @@ url_suffix = "?view_full_work=true"
 if not os.path.exists(html_dir):
     os.makedirs(html_dir)
 
-for idfile in glob.glob(id_dir + "/HP.txt"):
+for idfile in glob.glob(id_dir + "/*.txt"):
     
     file_prefix = os.path.splitext(os.path.basename(idfile))[0] #prefix: LOTR, HP...
     print("Downloading texts from:", file_prefix)
