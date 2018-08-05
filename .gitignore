@@ -1,3 +1,7 @@
 html/
 texts/
-testing/
+ID/
+testing/X_term_document_matrix.csv
+testing/X_tfidf_matrix.csv
+sparsematrix.npz
+sparsematrix_tfidf.npz

@@ -1,18 +1,22 @@
 """
-This script searches for fanfiction on archiveofourown.org and extracts the identifier of each found text and saves it to a txt file
+1_prepareDownload.py
+This script searches for fanfiction on archiveofourown.org and extracts the identifier of each found text and saves it to a txt file.
+The collected identifiers are used for downloading the texts.
+
+Next script: 2_conductDownload.py
 """
 
 #Imports
-
-from bs4 import BeautifulSoup
 import os
 import re
-import requests
 
+import requests
+from bs4 import BeautifulSoup
+
+#Folders
+id_dir = os.path.join(os.getcwd(), "ID")
 
 #Parameters
-
-id_dir = os.path.join(os.getcwd(), "ID")
 search_url = "https://archiveofourown.org/works/search?"
 search_parameter = {
      "word_count": "&work_search[word_count]=5000-20000"
@@ -28,12 +32,9 @@ novels = {
 ,"PJ" : "Percy+Jackson+and+the+Olympians+%26+Related+Fandoms+-+All+Media+Types"
 ,"TH" : "The+Hobbit+-+J.+R.+R.+Tolkien"
 }
+#Scroll through the result pages: 1 page = 20 results
+pages = 10       
 
-pages = 10       #1 page = 20 results
-
-
-
-#Functions
 
 def get_work_IDs(search_url, search_parameter, novel, pages):
     
@@ -46,16 +47,20 @@ def get_work_IDs(search_url, search_parameter, novel, pages):
         result_page = requests.get(query_url)
         
         resultpage_soup = BeautifulSoup(result_page.text, "lxml")
-        IDs = resultpage_soup.select("h4.heading > a:nth-of-type(1)") #first <a> element in <h4> always contains work-ID
+        #first <a> element in <h4> always contains work-ID
+        IDs = resultpage_soup.select("h4.heading > a:nth-of-type(1)") 
 
         for ID in IDs:
             if ID.attrs.get("href"):
-                ID_extracted = re.search("([0-9]+)", ID["href"]) #extract the ID: from works/123456 to 123456
+                #extract the ID: from works/123456 to 123456
+                ID_extracted = re.search("([0-9]+)", ID["href"]) 
                 ID_list.append(ID_extracted.group(0))
 
     return ID_list
 
 def write_work_IDs(IDs, novel):
+    
+    #Name ID file after novel name: LOTR.txt etc.
     with open(id_dir + "/" + novel + ".txt", "w", encoding="utf-8") as outfile:
         IDs_str = "\n".join(IDs)
         outfile.write(IDs_str)
@@ -79,8 +84,8 @@ def main(id_dir, search_url, search_parameter, novels, pages):
 
             IDs = get_work_IDs(search_url, search_parameter, novels[novel], pages)
             print(len(IDs), "IDs found for", novel)
-            #print(IDs)
 
+            #Pages (=10) * 20 --> 200 texts per novel
             if (len(set(IDs)) == pages * 20):
                 write_work_IDs(IDs, novel)
             else:

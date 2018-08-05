@@ -1,0 +1,14 @@
+Task successfully performed at 20180805-142823
+
+Classifying by: Novels
+Splitting dataset with test_size 0.75 and k = 3 for k-NN
+Accuracy Naive Bayes: 0.81
+Accuracy LinearSVM: 0.8711111111111111
+Accuracy k-Nearest Neighbors: 0.75 
+
+Classifying by: Genres
+Splitting dataset with test_size 0.75 and k = 3 for k-NN
+Accuracy Naive Bayes: 0.98
+Accuracy LinearSVM: 0.9677777777777777
+Accuracy k-Nearest Neighbors: 0.9088888888888889 
+
